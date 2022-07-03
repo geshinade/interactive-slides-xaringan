@@ -1,0 +1,30 @@
+.orange { color: orange; 
+        font-weight: 700;
+}
+.green { color: green;
+        font-weight: 700;
+}
+.light_grey { color: #808080;
+            font-weight: 700;
+}
+.blue {color: blue;
+      font-weight; 700;
+}
+
+/* Create three equal columns that float next to each other */
+.column {
+	float: left;
+	width: 30%;
+	padding-top: 5em;
+	padding-left: 1em;
+	padding-right1em
+	
+}
+
+/* Clear floats after the columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+    

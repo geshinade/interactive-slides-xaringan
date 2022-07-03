@@ -1,0 +1,262 @@
+---
+title: "World Happiness"
+subtitle: "Interactive Slides Using xaringan"
+author: "Presented by: Geshin Aderemi"
+date: "Last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, my-style.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+    #chakra: "remark.js"
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(tidy = FALSE, tidy.opts = list(width.cutoff = 40))
+library(tidyverse)
+library(rio)
+library(lubridate)
+library(plotly)
+library(ggpmisc)
+library(maps)
+library(png)
+```
+
+
+# Table of Contents
+
+
+##World Happiness
+
+- Objective
+- Telling the Story with Data
+- Conclusion
+- Appendix
+
+---
+
+
+# Objective
+
+
+Identify if there are .green[demographic], and/or .light_grey[economic] factors that contribute to a .blue[happier] life.
+
+
+---
+
+.pull-left[
+## .blue[Population]
+
+Little to no correlation between happiness and population
+
+]
+
+.pull-right[
+
+ 
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+
+  health_pop <- import("happiness_2015_2017.csv") %>% 
+  select("Country", 
+         happiness = "Happiness Score" )
+
+  population <- import("population_2017.csv") %>% 
+  select("Country", 
+         population = "Population")
+
+  data <- left_join(population, health_pop, by="Country") %>% 
+    na.omit()
+
+  pop_graph <- ggplot(data, aes(x = log(population), y = log(happiness)))+
+   geom_point()+
+   stat_smooth(method = "lm",
+               se = FALSE)+
+   labs(x = "Population", y = "Happiness Score")
+ 
+ ggplotly(pop_graph)
+```
+
+]
+
+
+---
+
+.pull-left[
+## .blue[Health]
+
+Strong correlation between **happiness and health(life expectancy)**
+
+Are **happy people healthy**, or are **healthy people happy**?
+
+What contributes to a **longer life expectancy**?
+
+
+]
+
+
+.pull-right[
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+
+  happiness_data <- import("happiness_2015_2017.csv") %>% 
+  select(happiness = "Happiness Score", 
+         health = "Health (Life Expectancy)")
+
+ my_graph <- ggplot(happiness_data, aes(x = happiness, y = health))+
+   geom_point()+
+   stat_smooth(method = "lm",
+               se = FALSE, 
+               size = 1)
+ 
+ ggplotly(my_graph)
+```
+
+]
+
+---
+
+.pull-left[
+## .blue[Economy (GDP per Capita)]
+
+Strong correlation between **happiness and GDP**
+
+Are **happy people in high-income countries**, or are **people in high-income countries happy**?
+
+
+]
+
+
+.pull-right[
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+
+   happiness_data <- import("happiness_2015_2017.csv") %>% 
+  select(health = "Health (Life Expectancy)", 
+         gdp = "Economy (GDP per Capita)")
+
+ health_gdp <- ggplot(happiness_data, aes(x = gdp, y = health))+
+   geom_point()+
+   stat_smooth(method = "lm",
+               se = FALSE, 
+               size = 1)
+ 
+ ggplotly(health_gdp)
+```
+
+]
+
+---
+
+## .blue[Wealth]
+
+- Strong correlation between **Gross Domestic Product (GDP) and health**
+
+- Even stronger correlation between **GDP and Happiness**
+
+- **Richer countries have higher average happiness levels**
+
+.pull-left[
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", out.height="20%"}
+
+  happiness_data <- import("happiness_2015_2017.csv") %>% 
+  select(health = "Health (Life Expectancy)", 
+         gdp = "Economy (GDP per Capita)")
+
+ health_gdp <- ggplot(happiness_data, aes(x = gdp, y = health))+
+   geom_point()+
+   stat_smooth(method = "lm",
+               se = FALSE, 
+               size = 1)
+ 
+ ggplotly(health_gdp)
+```
+
+]
+
+.pull-right[
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", out.height="10%"}
+
+  happiness_data <- import("happiness_2015_2017.csv") %>% 
+  select(happiness = "Happiness Score", 
+         gdp = "Economy (GDP per Capita)")
+
+  happiness_gdp<- ggplot(happiness_data, aes(x = happiness, y = gdp))+
+   geom_point()+
+   stat_smooth(method = "lm",
+               se = FALSE, 
+               size = 1)
+ 
+ ggplotly(happiness_gdp)
+```
+
+]
+
+---
+class: center
+# Conclusion
+
+
+
+.column[ .green[Wealthier] countries and ones that have sustained economic growth tend to have higher             average .blue[happiness] levels.
+
+]
+
+.column[.orange[Healthier] countries also tend to have a .blue[happier] population. 
+
+However, .orange[healthier] countries also tend to be .green[wealthy].
+]
+    
+.column[   *Evidence suggests that .blue[wealth], .orange[health], and .blue[happiness] go together.
+
+
+
+*Does not mean there is causal effect. Further analysis needed
+]
+
+---
+
+# Maps
+
+```{r, out.width="100%"}
+library(leaflet)
+
+leaflet() %>% 
+  setView(lng = 71.0589, lat = 42.3601, zoom = 12) %>% 
+  addProviderTiles(providers$Esri.NatGeoWorldMap)
+```
+
+
+---
+## Plots
+
+```{r, out.width="100%", out.height="50%"}
+library(timetk)
+
+m4_monthly %>% 
+  plot_time_series(date, value, .facet_vars = id, .facet_ncol = 2)
+
+```
+
+
+---
+# Appendix
+
+ Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan)
+ 
+ The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+ 
+World Happiness Report dataset from [kaggle.com](https://www.kaggle.com/datasets/unsdsn/world-happiness)
+
+Inspiration for the the visualization from [Kevin Hart](https://www.youtube.com/watch?v=Akt3SdKL4yM)
+
+
+
+
+
+
+
+
+
+
