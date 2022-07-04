@@ -5,7 +5,7 @@ author: "Presented by: Geshin Aderemi"
 date: "Last updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts, my-style.css]
+    css: [default, metropolis, metropolis-fonts, custom-style.css]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -217,39 +217,15 @@ However, .orange[healthier] countries also tend to be .green[wealthy].
 
 ---
 
-# Maps
+# References
 
-```{r, out.width="100%"}
-library(leaflet)
-
-leaflet() %>% 
-  setView(lng = 71.0589, lat = 42.3601, zoom = 12) %>% 
-  addProviderTiles(providers$Esri.NatGeoWorldMap)
-```
-
-
----
-## Plots
-
-```{r, out.width="100%", out.height="50%"}
-library(timetk)
-
-m4_monthly %>% 
-  plot_time_series(date, value, .facet_vars = id, .facet_ncol = 2)
-
-```
-
-
----
-# Appendix
-
- Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan)
+ - Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan)
  
- The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+ - The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
  
-World Happiness Report dataset from [kaggle.com](https://www.kaggle.com/datasets/unsdsn/world-happiness)
+ - World Happiness Report dataset from [kaggle.com](https://www.kaggle.com/datasets/unsdsn/world-happiness)
 
-Inspiration for the the visualization from [Kevin Hart](https://www.youtube.com/watch?v=Akt3SdKL4yM)
+ - Inspiration for the the visualization from [Kevin Hart](https://www.youtube.com/watch?v=Akt3SdKL4yM)
 
 
 
